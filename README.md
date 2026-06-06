@@ -1,3 +1,5 @@
+![Actions Status](https://img.shields.io/badge/GitHub%20Actions-View-blue?logo=github) [![Release](https://img.shields.io/github/v/release/Trojan3877/-Hierarchical-Language-Model?include_prereleases)](https://github.com/Trojan3877/-Hierarchical-Language-Model/releases) [![License](https://img.shields.io/github/license/Trojan3877/-Hierarchical-Language-Model)](https://github.com/Trojan3877/-Hierarchical-Language-Model/blob/main/LICENSE)
+
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)
 ![Transformers](https://img.shields.io/badge/Transformers-Architecture-orange)
 ![Hierarchical LLM](https://img.shields.io/badge/LLM-Hierarchical%20Reasoning-red)
