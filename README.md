@@ -10,7 +10,7 @@
 ![Last Commit](https://img.shields.io/github/last-commit/Trojan3877/-Hierarchical-Language-Model)
 ![Repo Size](https://img.shields.io/github/repo-size/Trojan3877/-Hierarchical-Language-Model)
 ![Stars](https://img.shields.io/github/stars/Trojan3877/-Hierarchical-Language-Model?style=social)
-
+![CI Build Status](https://github.com/Trojan3877/-Hierarchical-Language-Model/actions/workflows/ci.yml/badge.svg)
 
 
 
