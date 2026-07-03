@@ -25,7 +25,14 @@
 │       └── test_configs.py   # <-- Validates hyperparameters
 ├── run_engine.py             # <-- Root script to initialize training/inference loops
 └── requirements.txt          # <-- Managed framework dependencies (torch, ruff, black)
-
+├── hierarchical_lm/          # <-- PyTorch Source Package
+├── deployment/
+│   ├── app.py                # <-- Tier 2/4 Gateway Core
+│   ├── Dockerfile            # <-- Container Engine Blueprint
+│   └── docker-compose.yml    # <-- Tier 3-7 Local Infrastructure Orchestration Mesh
+├── dailylog.md               # <-- Operations History Log
+├── run_engine.py             # <-- Training Driver Entry Point
+└── requirements.txt          # <-- Global Context Dependencies
 Hierarchical-Language-Model is a production-grade AI system designed to demonstrate enterprise-level LLM engineering, combining:
 
 Hierarchical reasoning
