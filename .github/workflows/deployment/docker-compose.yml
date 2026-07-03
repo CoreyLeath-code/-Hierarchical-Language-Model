@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # Tier 2 & 4: API Processing and Entry Point Interface
+  ingress-api-service:
+    build:
+      context: ../
+      dockerfile: ./deployment/Dockerfile
+    container_name: hlm_ingress_api
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - REDIS_QUEUE_URL=redis://task-queue-tier:6373/0
+    depends_on:
+      - task-queue-tier
+    networks:
+      - hlm_enterprise_mesh
+
+  # Tier 6: Distributed Task Queue Backbone (Redis)
+  task-queue-tier:
+    image: redis:7.2-alpine
+    container_name: hlm_task_queue
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - hlm_queue_cache:/data
+    networks:
+      - hlm_enterprise_mesh
+
+  # Tier 5: High-Performance Compiled Inference Engine (Simulated Triton/ONNX Runtime Target)
+  inference-engine-worker:
+    build:
+      context: ../
+      dockerfile: ./deployment/Dockerfile
+    container_name: hlm_inference_worker
+    command: python -c "print('Inference worker listening to model pipeline inputs... Engine operational.')"
+    environment:
+      - CUDA_VISIBLE_DEVICES=-1 # Swapped to CPU context execution limits for base blueprint compliance
+    depends_on:
+      - task-queue-tier
+    networks:
+      - hlm_enterprise_mesh
+
+  # Tier 7: Persistent Metadata Storage & Feature Tracking
+  metadata-datastore:
+    image: postgres:16-alpine
+    container_name: hlm_metadata_store
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=hlm_metrics
+      - POSTGRES_USER=orchestrator
+      - POSTGRES_PASSWORD=system_hygiene_secured
+    volumes:
+      - hlm_db_persistence:/var/lib/postgresql/data
+    networks:
+      - hlm_enterprise_mesh
+
+networks:
+  hlm_enterprise_mesh:
+    driver: bridge
+
+volumes:
+  hlm_queue_cache:
+  hlm_db_persistence:
