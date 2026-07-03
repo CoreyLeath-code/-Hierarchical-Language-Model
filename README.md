@@ -11,6 +11,12 @@
 ![Repo Size](https://img.shields.io/github/repo-size/Trojan3877/-Hierarchical-Language-Model)
 ![Stars](https://img.shields.io/github/stars/Trojan3877/-Hierarchical-Language-Model?style=social)
 ![CI Build Status](https://github.com/Trojan3877/-Hierarchical-Language-Model/actions/workflows/ci.yml/badge.svg)
+[![HLM Hygiene Matrix](https://github.com/CoreyLeath-code/-Hierarchical-Language-Model/actions/workflows/hlm-hygiene.yml/badge.svg)](https://github.com/CoreyLeath-code/-Hierarchical-Language-Model/actions/workflows/hlm-hygiene.yml)
+![Model Hygiene](https://img.shields.io/badge/Model%20Hygiene-Enforced-brightgreen?style=flat-square&logo=github)
+![Tensor Contracts](https://img.shields.io/badge/Tensor%20Contracts-Validated%20%7C%20PyTorch-blue?style=flat-square&logo=pytorch)
+![Inference Engine](https://img.shields.io/badge/Inference%20Engine-ONNX%20%7C%20Compiled-orange?style=flat-square&logo=onnx)
+![SAST Scanning](https://img.shields.io/badge/SAST%20Scan-CodeQL%20Passing-emerald?style=flat-square&logo=githubactions)
+![Security Shield](https://img.shields.io/badge/Security%20Shield-TruffleHog%20Active-red?style=flat-square&logo=shield)
 
 ├── hierarchical_lm/          # <-- Core package directory
 │   ├── __init__.py           # <-- Makes the directory a python package
