@@ -12,7 +12,19 @@
 ![Stars](https://img.shields.io/github/stars/Trojan3877/-Hierarchical-Language-Model?style=social)
 ![CI Build Status](https://github.com/Trojan3877/-Hierarchical-Language-Model/actions/workflows/ci.yml/badge.svg)
 
-
+├── hierarchical_lm/          # <-- Core package directory
+│   ├── __init__.py           # <-- Makes the directory a python package
+│   ├── config.py             # <-- Model hyperparameters & configuration schemas
+│   ├── tokenizer.py          # <-- Text cleaning and hierarchical string slicing
+│   ├── dataset.py            # <-- PyTorch Dataset & DataLoader pipelines
+│   └── model.py              # <-- The TokenEncoder and HierarchicalLM network modules
+├── tests/
+│   ├── unit/
+│   │   └── test_model.py     # <-- Verifies tensor dimensions pass cleanly
+│   └── schemas/
+│       └── test_configs.py   # <-- Validates hyperparameters
+├── run_engine.py             # <-- Root script to initialize training/inference loops
+└── requirements.txt          # <-- Managed framework dependencies (torch, ruff, black)
 
 Hierarchical-Language-Model is a production-grade AI system designed to demonstrate enterprise-level LLM engineering, combining:
 
