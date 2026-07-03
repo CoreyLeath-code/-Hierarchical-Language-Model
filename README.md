@@ -11,7 +11,6 @@
 ![Repo Size](https://img.shields.io/github/repo-size/Trojan3877/-Hierarchical-Language-Model)
 ![Stars](https://img.shields.io/github/stars/Trojan3877/-Hierarchical-Language-Model?style=social)
 ![CI Build Status](https://github.com/Trojan3877/-Hierarchical-Language-Model/actions/workflows/ci.yml/badge.svg)
-[![HLM Hygiene Matrix](https://github.com/CoreyLeath-code/-Hierarchical-Language-Model/actions/workflows/hlm-hygiene.yml/badge.svg)](https://github.com/CoreyLeath-code/-Hierarchical-Language-Model/actions/workflows/hlm-hygiene.yml)
 ![Model Hygiene](https://img.shields.io/badge/Model%20Hygiene-Enforced-brightgreen?style=flat-square&logo=github)
 ![Tensor Contracts](https://img.shields.io/badge/Tensor%20Contracts-Validated%20%7C%20PyTorch-blue?style=flat-square&logo=pytorch)
 ![Inference Engine](https://img.shields.io/badge/Inference%20Engine-ONNX%20%7C%20Compiled-orange?style=flat-square&logo=onnx)
