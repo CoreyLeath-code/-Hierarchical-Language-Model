@@ -6,6 +6,11 @@ __pycache__/
 *.pkl
 *.pt
 .venv/
+.coverage
+.pytest_tmp/
+.ruff_cache/
+.pip-audit-cache/
+htmlcov/
 
 # Logs
 *.log

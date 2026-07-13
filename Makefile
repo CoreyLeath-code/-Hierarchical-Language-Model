@@ -1,10 +1,13 @@
 # Makefile for quick commands
 
 install:
-	pip install -r requirements.txt
+	python -m pip install -r requirements.txt
+
+install-dev:
+	python -m pip install -r requirements.txt -r requirements-dev.txt
 
 test:
-	pytest tests/ -v
+	pytest --cov=api --cov=hierarchical_lm --cov-report=term-missing
 
 run-api:
 	uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
@@ -18,16 +21,23 @@ docker-build:
 docker-run:
 	docker run -p 8000:8000 hlm:latest
 
+lint:
+	ruff check api hierarchical_lm benchmarks tests
+
+benchmark:
+	python benchmarks/benchmark_hlm.py --iterations 100 --output benchmark-results.json
+	python -m json.tool benchmark-results.json > /tmp/benchmark-results.pretty.json
+
 .PHONY: ingest api dash
 
 # Build vector index from docs/ and data/
 ingest:
-\tpython -m src.ingest --folders data docs
+	python -m src.ingest --folders data docs
 
 # Run FastAPI API
 api:
-\tuvicorn api.main:app --reload --port 8080
+	uvicorn api.main:app --reload --port 8080
 
 # Run Streamlit dashboard
 dash:
-\tstreamlit run dashboard/rag_app.py
+	streamlit run dashboard/rag_app.py

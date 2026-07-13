@@ -1,57 +1,86 @@
-name: CI
+name: 9 Tier Deployment Hygiene
 
 on:
   push:
-    branches: ["main", "copilot/**"]
+    branches: ["main"]
   pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  lint-and-test:
+  hygiene:
+    name: Hygiene Gate (${{ matrix.python-version }})
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11"]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Tier 1 - Checkout source
+        uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
+      - name: Tier 2 - Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
 
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: ${{ runner.os }}-pip-
-
-      # Installs baseline syntax tools and common NLP/Deep Learning helper stubs upfront
-      - name: Install dependencies
+      - name: Tier 3 - Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 black mypy bandit pytest fastapi httpx pydantic-settings
-          # Pre-provision lightweight ML/NLP interfaces to prevent test collection crashes
-          pip install transformers tokenizers safetensors numpy || echo "Baseline ML packages bypassed."
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          python -m pip install -r requirements.txt -r requirements-dev.txt
 
-      - name: Lint (flake8)
-        run: |
-          flake8 app/ src/ tests/ --max-line-length=100 || echo "Lint warnings bypassed."
+      - name: Tier 4 - Static lint
+        run: ruff check api hierarchical_lm benchmarks tests
 
-      - name: Format check (black)
-        run: |
-          black --check app/ src/ tests/ --line-length=100 || echo "Formatting checks bypassed."
+      - name: Tier 5 - Format verification
+        run: ruff format --check api hierarchical_lm benchmarks tests
 
-      - name: Type check (mypy)
-        run: |
-          mypy app/ src/ --ignore-missing-imports || echo "Static typing checks bypassed."
+      - name: Tier 6 - Python import compilation
+        run: python -m compileall -q api hierarchical_lm benchmarks tests
 
-      # Fault-tolerant test execution gate to ensure your badge stays green
-      - name: Run tests
+      - name: Tier 7 - Unit, API contract, and coverage tests
+        run: pytest --cov=api --cov=hierarchical_lm --cov-report=term-missing
+
+      - name: Tier 8 - Benchmark JSON generation and validation
         run: |
-          if [ -d tests ]; then
-            pytest -v --tb=short --collect-only || echo "Test collection completed successfully."
-          else
-            echo "No test assets discovered."
-          fi
+          python benchmarks/benchmark_hlm.py --iterations 100 --output benchmark-results.json
+          python -m json.tool benchmark-results.json > /tmp/benchmark-results.pretty.json
+
+      - name: Tier 9 - Deployment and security hygiene
+        run: |
+          docker build -t hlm:${{ github.sha }} .
+          bandit -r api hierarchical_lm benchmarks -ll
+          pip-audit --cache-dir .pip-audit-cache -r requirements.txt
+
+      - name: Upload benchmark results
+        uses: actions/upload-artifact@v4
+        with:
+          name: hlm-benchmark-results-${{ matrix.python-version }}
+          path: benchmark-results.json
+
+      - name: Workflow summary
+        if: always()
+        run: |
+          {
+            echo "## 9 Tier Deployment Hygiene Summary"
+            echo ""
+            echo "| Tier | Gate |"
+            echo "|---:|---|"
+            echo "| 1 | Checkout source |"
+            echo "| 2 | Python runtime setup with pip cache |"
+            echo "| 3 | Dependency installation |"
+            echo "| 4 | Ruff static lint |"
+            echo "| 5 | Ruff format verification |"
+            echo "| 6 | Python import compilation |"
+            echo "| 7 | Unit/API/coverage tests |"
+            echo "| 8 | Benchmark JSON generation and validation |"
+            echo "| 9 | Docker build, Bandit scan, and pip-audit |"
+          } >> "$GITHUB_STEP_SUMMARY"
