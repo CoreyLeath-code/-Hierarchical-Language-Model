@@ -1,215 +1,155 @@
-![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)
-![Transformers](https://img.shields.io/badge/Transformers-Architecture-orange)
-![Hierarchical LLM](https://img.shields.io/badge/LLM-Hierarchical%20Reasoning-red)
-![NLP](https://img.shields.io/badge/NLP-Advanced-purple)
-![Representation Learning](https://img.shields.io/badge/Learning-Embeddings-blue)
-![AI System](https://img.shields.io/badge/System-LLM%20Pipeline-green)
-![Research](https://img.shields.io/badge/Type-AI%20Research-critical)
-![Production Ready](https://img.shields.io/badge/Level-Advanced%20AI-black)
-![Status](https://img.shields.io/badge/Status-Portfolio%20Ready-brightgreen)
-![Last Commit](https://img.shields.io/github/last-commit/Trojan3877/-Hierarchical-Language-Model)
-![Repo Size](https://img.shields.io/github/repo-size/Trojan3877/-Hierarchical-Language-Model)
-![Stars](https://img.shields.io/github/stars/Trojan3877/-Hierarchical-Language-Model?style=social)
-![CI Build Status](https://github.com/Trojan3877/-Hierarchical-Language-Model/actions/workflows/ci.yml/badge.svg)
-![Model Hygiene](https://img.shields.io/badge/Model%20Hygiene-Enforced-brightgreen?style=flat-square&logo=github)
-![Tensor Contracts](https://img.shields.io/badge/Tensor%20Contracts-Validated%20%7C%20PyTorch-blue?style=flat-square&logo=pytorch)
-![Inference Engine](https://img.shields.io/badge/Inference%20Engine-ONNX%20%7C%20Compiled-orange?style=flat-square&logo=onnx)
-![SAST Scanning](https://img.shields.io/badge/SAST%20Scan-CodeQL%20Passing-emerald?style=flat-square&logo=githubactions)
-![Security Shield](https://img.shields.io/badge/Security%20Shield-TruffleHog%20Active-red?style=flat-square&logo=shield)
+# Hierarchical Language Model
 
-├── hierarchical_lm/          # <-- Core package directory
-│   ├── __init__.py           # <-- Makes the directory a python package
-│   ├── config.py             # <-- Model hyperparameters & configuration schemas
-│   ├── tokenizer.py          # <-- Text cleaning and hierarchical string slicing
-│   ├── dataset.py            # <-- PyTorch Dataset & DataLoader pipelines
-│   └── model.py              # <-- The TokenEncoder and HierarchicalLM network modules
-├── tests/
-│   ├── unit/
-│   │   └── test_model.py     # <-- Verifies tensor dimensions pass cleanly
-│   └── schemas/
-│       └── test_configs.py   # <-- Validates hyperparameters
-├── run_engine.py             # <-- Root script to initialize training/inference loops
-└── requirements.txt          # <-- Managed framework dependencies (torch, ruff, black)
-├── hierarchical_lm/          # <-- PyTorch Source Package
-├── deployment/
-│   ├── app.py                # <-- Tier 2/4 Gateway Core
-│   ├── Dockerfile            # <-- Container Engine Blueprint
-│   └── docker-compose.yml    # <-- Tier 3-7 Local Infrastructure Orchestration Mesh
-├── dailylog.md               # <-- Operations History Log
-├── run_engine.py             # <-- Training Driver Entry Point
-└── requirements.txt          # <-- Global Context Dependencies
-Hierarchical-Language-Model is a production-grade AI system designed to demonstrate enterprise-level LLM engineering, combining:
+![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python)
+![PyTorch](https://img.shields.io/badge/PyTorch-Hierarchical%20Encoders-ee4c2c?logo=pytorch)
+![FastAPI](https://img.shields.io/badge/API-FastAPI-009688?logo=fastapi)
+![CI](https://github.com/CoreyLeath-code/-Hierarchical-Language-Model/actions/workflows/ci.yml/badge.svg)
+![Status](https://img.shields.io/badge/Status-Research%20Hardened-brightgreen)
 
-Hierarchical reasoning
+Hierarchical Language Model is a research-oriented PyTorch and FastAPI project for
+document representation learning. It demonstrates a token-to-sentence-to-document
+pipeline with deterministic tests, API contract validation, benchmark capture, and
+deployment hygiene suitable for continued production hardening.
 
-GPU-accelerated inference (CUDA)
+The live Hugging Face generation path is intentionally opt-in. Local tests and CI use
+safe deterministic paths so the project remains reproducible without gated model
+credentials, GPU hardware, or large model downloads.
 
-API-based serving
+## Architecture
 
-Automation (n8n)
+```text
+Document text
+   |
+   v
+HierarchicalTokenizer
+   |
+   v
+[batch, max_sentences, max_seq_len]
+   |
+   v
+TokenEncoder -> Document GRU -> Classifier logits
 
-Experiment tracking (MLflow)
+FastAPI /generate
+   |
+   +-- safe fallback by default
+   +-- live Hugging Face model when HLM_ENABLE_LIVE_MODEL=true
+```
 
-CI/CD pipelines
+## Repository Layout
 
-Big-Tech-style documentation
+```text
+api/                    FastAPI request schema and generation gateway
+benchmarks/             Deterministic latency benchmark harness
+deployment/             Docker Compose deployment blueprint
+hierarchical_lm/        Core config, tokenizer, dataset, and model package
+src/                    Extended encoder, RAG, provider, and ingestion prototypes
+tests/                  Unit, API contract, and tensor-shape regression tests
+benchmark-results.json  Recorded benchmark output
+metrics.md              Research metrics and quality summary
+```
 
-This repository is intentionally built to meet or exceed L6–L7 expectations at companies like Microsoft, Amazon, Google, Meta, OpenAI, DeepMind, Tesla, Waymo, and Stripe.
+## Research Metrics And Benchmarks
 
- System Architecture 
+Latest recorded benchmark command:
 
-📷 Architecture Diagram 
+```bash
+python benchmarks/benchmark_hlm.py --iterations 100 --output benchmark-results.json
+python -m json.tool benchmark-results.json
+```
 
+| Benchmark | Mean latency | Median latency | p95 latency | Evidence |
+|---|---:|---:|---:|---|
+| Tokenizer document encoding | 0.007402 ms | 0.006550 ms | 0.008000 ms | `benchmark-results.json` |
+| Dataset materialization | 0.028561 ms | 0.025100 ms | 0.044400 ms | `benchmark-results.json` |
+| Model forward pass | 2.207161 ms | 2.189750 ms | 2.790500 ms | `benchmark-results.json` |
+| API safe fallback generation | 0.000217 ms | 0.000200 ms | 0.000200 ms | `benchmark-results.json` |
 
+| Quality signal | Recorded value |
+|---|---:|
+| Tests | 13 passing |
+| Runtime package coverage | 87% |
+| Benchmark JSON validation | Passing |
+| Live model downloads required for CI | 0 |
+| Case-conflicting tracked log files | Resolved to `dailylog.md` |
 
-docs/architecture.png
+See [metrics.md](metrics.md) for the full research metrics table and production target metrics.
 
+## 9 Tier Deployment Hygiene
 
-Architecture Flow
-User Prompt
-   ↓
-FastAPI REST API
-   ↓
-Hierarchical LLM (Llama-3, CUDA)
-   ↓
-MLflow Tracking & Registry
-   ↓
-Metrics Dashboard
-   ↓
-n8n Automation (logging, retraining, alerts)
+| Tier | Gate | Purpose |
+|---:|---|---|
+| 1 | Checkout source | Reproducible source snapshot |
+| 2 | Python runtime setup | Standard Ubuntu latest runtime with pip cache |
+| 3 | Dependency installation | Runtime and dev dependencies installed explicitly |
+| 4 | Ruff static lint | Syntax, import, and maintainability checks |
+| 5 | Ruff format verification | Consistent source formatting |
+| 6 | Python import compilation | Import-time and syntax validation |
+| 7 | Unit, API, and coverage tests | Regression coverage for core runtime behavior |
+| 8 | Benchmark JSON validation | Machine-readable performance evidence |
+| 9 | Docker, Bandit, and pip-audit | Deployment build, SAST, and dependency vulnerability hygiene |
 
-🚀 Core Features
-🧠 Large Language Model
+## Quick Start
 
-Llama-3 (GPU-accelerated)
+```bash
+python -m venv .venv
+. .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt -r requirements-dev.txt
+pytest
+```
 
-Hierarchical reasoning pipeline
+Run the API in safe fallback mode:
 
-Optimized FP16 inference
-
-⚡ API Layer
-
-FastAPI inference endpoint
-
-Health checks
-
-JSON-based prompt interface
-
-📊 Experiment Tracking
-
-MLflow metrics
-
-Model registry support
-
-Latency + quality tracking
-
-🤖 Automation
-
-n8n workflows
-
-Automated inference logging
-
-Optional retraining triggers
-
-🔁 CI/CD
-
-GitHub Actions
-
-Automated tests
-
-Lint + build checks
-
-🐳 Deployment
-
-Docker + NVIDIA runtime
-
-CUDA-enabled containers
-
-Render / cloud-ready
-
-Hierarchical-Language-Model/
-├── api/
-│   ├── main.py
-│   ├── inference.py
-│   └── schemas.py
-├── model/
-│   └── llama3/
-├── workflows/
-│   └── n8n/
-│       └── llm_workflow.json
-├── mlflow/
-│   └── setup.py
-├── tests/
-│   └── test_api.py
-├── docs/
-│   └── architecture.png
-├── metrics.md
-├── dailylog.md
-├── CONTRIBUTING.md
-├── Dockerfile
-├── requirements.txt
-└── README.md
-
-⚙️ Quick Start
-1️⃣ Clone Repo
-git clone https://github.com/Trojan3877/Hierarchical-Language-Model
-cd Hierarchical-Language-Model
-
-2️⃣ Install Dependencies
-pip install -r requirements.txt
-
-3️⃣ Run API Locally
-uvicorn api.main:app --host 0.0.0.0 --port 8000
-
-4️⃣ Test Endpoint
+```bash
+uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 curl -X POST http://localhost:8000/generate \
   -H "Content-Type: application/json" \
-  -d '{"prompt":"Explain hierarchical reasoning","max_tokens":100}'
+  -d '{"prompt":"Explain hierarchical reasoning","max_tokens":64}'
+```
 
-🐳 Docker + CUDA Deployment
-docker build -t hierarchical-llm .
-docker run --gpus all -p 8000:8000 hierarchical-llm
+Enable live model generation only when credentials, hardware, and model access are ready:
 
+```bash
+export HLM_ENABLE_LIVE_MODEL=true
+export HLM_MODEL_NAME=meta-llama/Meta-Llama-3-8B-Instruct
+export HLM_MODEL_REVISION=main
+uvicorn api.main:app --host 0.0.0.0 --port 8000
+```
 
-✔️ NVIDIA CUDA 12.1
-✔️ GPU auto-detection
-✔️ Render / cloud compatible
+## Validation
 
-📈 Metrics & Performance
+```bash
+ruff check api hierarchical_lm benchmarks tests
+ruff format --check api hierarchical_lm benchmarks tests
+pytest --cov=api --cov=hierarchical_lm --cov-report=term-missing
+python benchmarks/benchmark_hlm.py --iterations 100 --output benchmark-results.json
+python -m json.tool benchmark-results.json
+python -m compileall -q api hierarchical_lm benchmarks tests src
+```
 
-See 👉 metrics.md
+## Deployment
 
-Metric	Value
-Avg Latency	~120ms
-GPU Utilization	60–80%
-BLEU Score	0.72
-API Uptime	99.9%
-📝 Engineering Log
+Build the container:
 
-See 👉 dailylog.md
+```bash
+docker build -t hierarchical-language-model:latest .
+```
 
-Tracks:
+Run the local deployment blueprint:
 
-Model upgrades
+```bash
+docker compose -f deployment/docker-compose.yml up --build
+```
 
-Performance improvements
+## Known Gaps
 
-Deployment milestones
+- The deterministic benchmark uses compact synthetic inputs; it is not a large-corpus model-quality evaluation.
+- Live Hugging Face generation requires explicit opt-in and valid model access.
+- The RAG and dashboard modules remain prototype extensions and are not part of the core CI coverage gate.
+- Production auth, rate limiting, TLS, model registry controls, and observability backends should be added before internet-facing deployment.
 
-CI/CD changes
-
-🤝 Contributing
-
-See 👉 CONTRIBUTING.md
-
-PRs welcome.
-Enterprise coding standards enforced.
-🧑‍💻 Author
+## Author
 
 Corey Leath
-Senior Software Engineering Undergraduate
-AI / ML Engineer (LLMs, Systems, MLOps)
 
-🔗 GitHub: https://github.com/Trojan3877
-
-🎯 Target: Microsoft, Amazon, Google, OpenAI, DeepMind, Tesla, Waymo
+AI / ML Engineer focused on LLM systems, MLOps, and distributed AI infrastructure.

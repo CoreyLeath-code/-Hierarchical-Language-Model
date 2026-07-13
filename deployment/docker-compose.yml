@@ -1,0 +1,45 @@
+services:
+  ingress-api-service:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: hlm_ingress_api
+    ports:
+      - "8000:8000"
+    environment:
+      HLM_ENABLE_LIVE_MODEL: "false"
+      ENVIRONMENT: production
+      REDIS_QUEUE_URL: redis://task-queue-tier:6379/0
+    depends_on:
+      - task-queue-tier
+    networks:
+      - hlm_enterprise_mesh
+
+  task-queue-tier:
+    image: redis:7.2-alpine
+    container_name: hlm_task_queue
+    command: redis-server --appendonly yes
+    volumes:
+      - hlm_queue_cache:/data
+    networks:
+      - hlm_enterprise_mesh
+
+  metadata-datastore:
+    image: postgres:16-alpine
+    container_name: hlm_metadata_store
+    environment:
+      POSTGRES_DB: hlm_metrics
+      POSTGRES_USER: orchestrator
+      POSTGRES_PASSWORD: change-me-for-local-only
+    volumes:
+      - hlm_db_persistence:/var/lib/postgresql/data
+    networks:
+      - hlm_enterprise_mesh
+
+networks:
+  hlm_enterprise_mesh:
+    driver: bridge
+
+volumes:
+  hlm_queue_cache:
+  hlm_db_persistence:

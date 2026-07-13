@@ -7,12 +7,12 @@ Validates that Sentence, Paragraph, and Document encoders
 work correctly and produce expected output shapes.
 """
 
-import torch
 import pytest
+import torch
 
-from src.sentence_encoder import SentenceEncoder
-from src.paragraph_encoder import ParagraphEncoder
 from src.document_encoder import DocumentEncoder
+from src.paragraph_encoder import ParagraphEncoder
+from src.sentence_encoder import SentenceEncoder
 
 
 # -----------------
@@ -27,7 +27,7 @@ def dummy_sentences():
 def dummy_paragraphs():
     return [
         ["The cat sat on the mat.", "The dog barked loudly."],
-        ["The sun was shining.", "It was a beautiful day."]
+        ["The sun was shining.", "It was a beautiful day."],
     ]
 
 
@@ -37,8 +37,8 @@ def dummy_paragraphs():
 def test_sentence_encoder(dummy_sentences):
     encoder = SentenceEncoder()
     embeddings = encoder(dummy_sentences)
-    assert embeddings.shape[0] == len(dummy_sentences)   # batch size = num sentences
-    assert embeddings.shape[1] == 768                   # BERT hidden size
+    assert embeddings.shape[0] == len(dummy_sentences)  # batch size = num sentences
+    assert embeddings.shape[1] == 768  # BERT hidden size
 
 
 def test_paragraph_encoder(dummy_paragraphs):
@@ -53,7 +53,7 @@ def test_paragraph_encoder(dummy_paragraphs):
         paragraph_embeddings.append(para_emb)
 
     assert len(paragraph_embeddings) == len(dummy_paragraphs)
-    assert paragraph_embeddings[0].shape[1] == 1024     # bidirectional GRU (512*2)
+    assert paragraph_embeddings[0].shape[1] == 1024  # bidirectional GRU (512*2)
 
 
 def test_document_encoder(dummy_paragraphs):
