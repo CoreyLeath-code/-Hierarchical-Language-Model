@@ -1,5 +1,11 @@
 # Hierarchical Language Model
 
+<!-- portfolio-lifecycle-badges:start -->
+[![Latest release](https://img.shields.io/github/v/release/CoreyLeath-code/-Hierarchical-Language-Model?display_name=tag&sort=semver)](https://github.com/CoreyLeath-code/-Hierarchical-Language-Model/releases/latest)
+[![Lifecycle documentation](https://img.shields.io/badge/lifecycle-documented-2563eb)](#ownership-promotion-and-operational-lifecycle)
+[![Maintainer](https://img.shields.io/badge/maintainer-Corey%20Leath-111827)](https://github.com/CoreyLeath-code)
+<!-- portfolio-lifecycle-badges:end -->
+
 [![CI](https://github.com/CoreyLeath-code/-Hierarchical-Language-Model/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/CoreyLeath-code/-Hierarchical-Language-Model/actions/workflows/ci.yml)
 [![Python 3.11](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-hierarchical%20encoders-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org/)
