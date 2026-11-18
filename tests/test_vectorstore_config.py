@@ -1,6 +1,6 @@
 import pytest
 
-from src.retrievers.vectorstore import vectorstore_backend
+from src.retrievers.vectorstore import load_index, vectorstore_backend
 
 
 def test_vectorstore_defaults_to_offline_faiss(monkeypatch):
@@ -20,3 +20,11 @@ def test_vectorstore_rejects_unknown_backend(monkeypatch):
 
     with pytest.raises(ValueError, match="Unsupported VECTORSTORE_BACKEND"):
         vectorstore_backend()
+
+
+def test_local_faiss_pickle_load_is_disabled_by_default(monkeypatch, tmp_path):
+    monkeypatch.setenv("VECTORSTORE_BACKEND", "faiss")
+    monkeypatch.delenv("HLM_TRUST_LOCAL_FAISS_INDEX", raising=False)
+
+    with pytest.raises(RuntimeError, match="HLM_TRUST_LOCAL_FAISS_INDEX"):
+        load_index(index_dir=tmp_path)
