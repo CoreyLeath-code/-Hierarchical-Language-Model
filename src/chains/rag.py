@@ -1,8 +1,7 @@
 # src/chains/rag.py
 from __future__ import annotations
 from typing import List
-from langchain.schema import Document
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_core.documents import Document
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from src.retrievers.vectorstore import load_index
 from src.providers.hf_model import HFGenerator
