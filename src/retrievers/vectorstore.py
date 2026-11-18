@@ -115,6 +115,13 @@ def load_index(
 ):
     """Load the configured local FAISS or hosted Pinecone vector store."""
     selected_backend = _resolve_backend(backend)
+    if selected_backend == "faiss" and os.getenv(
+        "HLM_TRUST_LOCAL_FAISS_INDEX", ""
+    ).lower() not in {"1", "true", "yes"}:
+        raise RuntimeError(
+            "Local FAISS indexes deserialize pickle data. Only load a reviewed, "
+            "locally generated index by setting HLM_TRUST_LOCAL_FAISS_INDEX=true."
+        )
     embeddings = _embeddings(embedding_model)
 
     if selected_backend == "pinecone":
