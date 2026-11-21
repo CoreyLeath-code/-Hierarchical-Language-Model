@@ -1,5 +1,5 @@
 # Use a lightweight Python base image for the runtime artifact.
-FROM python:3.11-slim AS runtime-builder
+FROM python:3.15-slim AS runtime-builder
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
