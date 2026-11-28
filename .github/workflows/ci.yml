@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Tier 1 - Checkout source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Tier 2 - Set up Python
         uses: actions/setup-python@v7
